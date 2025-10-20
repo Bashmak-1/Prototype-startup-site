@@ -12,39 +12,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const tg = window.Telegram.WebApp;
   tg.ready();
 
+  console.log("initData:", tg.initData);
+  console.log("initDataUnsafe:", tg.initDataUnsafe);
+
   const addTaskViaBotButton = document.getElementById('add-task-btn');
 
-  // Готуємо Головну Кнопку Telegram
-  tg.MainButton.setText("Додати завдання через бота");
-  tg.MainButton.show(); // Показуємо кнопку в інтерфейсі Telegram
+  addTaskViaBotButton.addEventListener('click', () => {
+    console.log("Telegram WebApp object:", window.Telegram.WebApp);
 
-  // Тепер слухаємо натискання на цю ГОЛОВНУ кнопку
-  tg.MainButton.onClick(() => {
-    const taskText = prompt("Введіть назву завдання:", "Тестове завдання");
-
+    const taskText = prompt("Введіть назву завдання для додавання в Google Calendar через бота:", "Лабораторна з програмування");
     if (taskText && taskText.trim() !== "") {
-      
-      // Показуємо анімацію завантаження, щоб бачити, що процес почався
-      tg.MainButton.showProgress(); 
-      
       const dataToSend = {
         action: "addTask",
         text: taskText.trim()
       };
-
-      // ВІДПРАВЛЯЄМО ДАНІ
-      tg.sendData(JSON.stringify(dataToSend));
       
-      // Якщо код дійшов сюди, значить sendData спрацювала без помилок.
-      // Міняємо текст кнопки на "Відправлено!" і прибираємо завантаження.
-      tg.MainButton.hideProgress();
-      tg.MainButton.setText("Дані відправлено!");
-
-      // Робимо невелику затримку (2 секунди), щоб ви встигли побачити
-      // напис "Дані відправлено!", після чого закриваємо вікно.
-      setTimeout(() => {
-        tg.close();
-      }, 2000);
+      tg.sendData(JSON.stringify(dataToSend));
+      // tg.close();
     }
   });
 
