@@ -19,6 +19,28 @@
         tg.sendData(JSON.stringify({ action: "test", msg: "hello" }));
       };
       document.body.appendChild(btn);
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const tg = window.Telegram.WebApp;
+        if (!tg) {
+            alert("Telegram WebApp SDK не знайдено!");
+            return;
+        }
+
+        tg.ready();
+        console.log("initData:", tg.initData);
+        console.log("initDataUnsafe:", tg.initDataUnsafe);
+        alert("Telegram WebApp ініціалізовано. initData довжина: " + tg.initData.length);
+
+        const btn = document.createElement('button');
+        btn.textContent = "Send test data";
+        btn.onclick = () => {
+            tg.sendData(JSON.stringify({ action: "ping", text: "Привіт із WebApp!" }));
+            alert("sendData() виконано");
+        };
+        document.body.appendChild(btn);
+        });
+
     </script>
   </body>
 </html>
